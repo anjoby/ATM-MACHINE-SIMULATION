@@ -1,0 +1,88 @@
+# Simple ATM Machine
+
+accounts = {}
+
+def create_account():
+    print("\n--- Create Account ---")
+    acc_id = input("Enter new Account ID: ")
+    if acc_id in accounts:
+        print("⚠️ Account ID already exists!")
+        return
+    password = input("Set a password: ")
+    accounts[acc_id] = {'password': password, 'balance': 0.0}
+    print("✅ Account created successfully!")
+
+def login_account():
+    print("\n--- Account Login ---")
+    acc_id = input("Enter Account ID: ")
+    password = input("Enter Password: ")
+    
+    if acc_id in accounts and accounts[acc_id]['password'] == password:
+        print(f"✅ Login successful! Welcome, {acc_id}.")
+        account_menu(acc_id)
+    else:
+        print("❌ Invalid ID or password.")
+
+def account_menu(acc_id):
+    while True:
+        print("\n--- Account Menu ---")
+        print("1. Add Money")
+        print("2. Withdraw Money")
+        print("3. Show Balance")
+        print("4. Logout")
+        choice = input("Select an option: ")
+
+        if choice == '1':
+            amt = float(input("Enter amount to add: ₹"))
+            accounts[acc_id]['balance'] += amt
+            print(f"₹{amt} added successfully.")
+        elif choice == '2':
+            amt = float(input("Enter amount to withdraw: ₹"))
+            if amt > accounts[acc_id]['balance']:
+                print("⚠️ Insufficient funds.")
+            else:
+                accounts[acc_id]['balance'] -= amt
+                print(f"₹{amt} withdrawn successfully.")
+        elif choice == '3':
+            print(f"Current Balance: ₹{accounts[acc_id]['balance']}")
+        elif choice == '4':
+            print("🔒 Logged out.")
+            break
+        else:
+            print("❌ Invalid choice.")
+
+def settings():
+    print("\n--- Settings ---")
+    acc_id = input("Enter Account ID: ")
+    old_pass = input("Enter Current Password: ")
+
+    if acc_id in accounts and accounts[acc_id]['password'] == old_pass:
+        new_pass = input("Enter New Password: ")
+        accounts[acc_id]['password'] = new_pass
+        print("✅ Password changed successfully.")
+    else:
+        print("❌ Invalid ID or password.")
+
+def main():
+    while True:
+        print("\n====== ATM MACHINE ======")
+        print("1. Create Account")
+        print("2. Account Login")
+        print("3. Settings")
+        print("4. Exit")
+        choice = input("Select an option: ")
+
+        if choice == '1':
+            create_account()
+        elif choice == '2':
+            login_account()
+        elif choice == '3':
+            settings()
+        elif choice == '4':
+            print("🙏 Thank you for using the ATM!")
+            break
+        else:
+            print("❌ Invalid choice. Try again.")
+
+if __name__ == "__main__":
+    main()
